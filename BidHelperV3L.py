@@ -16,11 +16,10 @@ OPERATION_DELAY = 0.15 # 操作延时
 #yanzhengma_pos = (2528, 1107)
 #queren_pos = (2246, 1293)
 
-log_filename = f"{datetime.now().strftime('%Y%m%d')}.log"
-log = open(log_filename, "a")
-log.write("\n\n===================\n\n")
+log = None
 
 def printToLog(s, flush=True):
+  global log
   print(s, file=log)
   if flush:
     log.flush()
@@ -227,6 +226,10 @@ if __name__ == "__main__":
       cal = calibration(json.load(f))
 
   threads = []
+
+  log_filename = f"{args.pos}-{datetime.now().strftime('%Y%m%d')}.log"
+  log = open(log_filename, "a")
+  log.write(f"\n\n========={datetime.now()}==========\n\n")
 
   if "moni" in args.pos:
     seconds = input("enter remaining seconds before auto submit:")
