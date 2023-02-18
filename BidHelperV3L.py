@@ -151,12 +151,12 @@ class OperationPart():
 
     tp_jiajia1 = tp - timedelta(seconds=40) # aka, 11:29:20
     tp_submit1 = tp - timedelta(seconds=30) # aka, 11:29:30
-    tp_jiajia2 = tp - timedelta(seconds=11) # aka, 11:29:50
-    tp_submit2 = tp - timedelta(seconds=5, milliseconds=500) # aka, 11:29:54.55
+    tp_jiajia2 = tp - timedelta(seconds=11) # aka, 11:29:49
+    tp_submit2 = tp - timedelta(seconds=5, milliseconds=80) # aka, 11:29:54.920
     yanzhengma_ready = False
 
     delta1 = 300
-    delta2 = 700
+    delta2 = 600
 
     printToLog(f"第一次自动加价{delta1} 将于 {tp_jiajia1} 触发")
     printToLog(f"第一次自动提交 将于 {tp_submit1} 触发")
