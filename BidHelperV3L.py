@@ -45,7 +45,7 @@ class calibration(): # 校正
       extract("b_queren")
 
   def i_jiajia(self):
-    printToLog("按下 i 确认当前鼠标位置为 *加价输入* 坐标：")
+    printToLog("按下 i 确认当前鼠标位置为 *加价输入* 坐标，不要是数字中间位子：")
     keyboard.wait('i')  # 等待输入 i
     pos = PyMouse().position()
     printToLog(f"加价(i)坐标: {pos}")
@@ -125,7 +125,7 @@ class OperationPart():
   def auto_jiajia(self, now, delta):
     printToLog(f"{now} !! 加价{delta}", flush=False)
     auto.click(self.positions["i_jiajia"]) # 自动点击加价键
-    auto.press('backspace', presses=6)
+    #auto.press('backspace', presses=6)
     auto.typewrite(f'{delta}')
     time.sleep(0.3)
     auto.click(self.positions["b_jiajia"]) # 自动点击加价键
@@ -149,10 +149,10 @@ class OperationPart():
     """
     global yanzhengma_ready
 
-    tp_jiajia1 = tp - timedelta(seconds=40) # aka, 11:29:20
-    tp_submit1 = tp - timedelta(seconds=30) # aka, 11:29:30
+    tp_jiajia1 = tp - timedelta(seconds=30) # aka, 11:29:30
+    tp_submit1 = tp - timedelta(seconds=20) # aka, 11:29:40
     tp_jiajia2 = tp - timedelta(seconds=11) # aka, 11:29:49
-    tp_submit2 = tp - timedelta(seconds=5, milliseconds=80) # aka, 11:29:54.920
+    tp_submit2 = tp - timedelta(seconds=3, milliseconds=500) # aka, 11:29:56.500
     yanzhengma_ready = False
 
     delta1 = 300
@@ -202,6 +202,7 @@ class OperationPart():
   def wait_enter(self):
     global yanzhengma_ready
     printToLog(f"按回车，设置为允许到时自动提交")
+    printToLog(f"！！！没有自动删除功能，请提交之后自行清除300数字！！！")
     while True:
       keyboard.wait("enter") # 等待输入 enter
       yanzhengma_ready = True
@@ -215,6 +216,10 @@ if __name__ == "__main__":
   parser.add_argument("--pos", required=True, help="校准文件(JSON)")
   args = parser.parse_args()
 
+  log_filename = f"{args.pos}-{datetime.now().strftime('%Y%m%d')}.log"
+  log = open(log_filename, "a")
+  log.write(f"\n\n========={datetime.now()}==========\n\n")
+
   if args.cal: # re-calibration
     cal = calibration()
 
@@ -226,10 +231,6 @@ if __name__ == "__main__":
       cal = calibration(json.load(f))
 
   threads = []
-
-  log_filename = f"{args.pos}-{datetime.now().strftime('%Y%m%d')}.log"
-  log = open(log_filename, "a")
-  log.write(f"\n\n========={datetime.now()}==========\n\n")
 
   if "moni" in args.pos:
     seconds = input("enter remaining seconds before auto submit:")
